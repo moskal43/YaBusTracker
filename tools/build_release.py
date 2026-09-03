@@ -24,7 +24,7 @@ def main():
         ROOT / "CHANGELOG.md",
         ROOT / "custom_components/yandex_transit/LICENSE",
         ROOT / "README.md",
-        ROOT / "examples/dashboard.yaml",
+        *sorted((ROOT / "examples").glob("*.yaml")),
         ROOT / "docs/install.md",
     ]
     with ZipFile(output, "w", compression=ZIP_DEFLATED) as archive:
