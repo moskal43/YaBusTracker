@@ -10,6 +10,8 @@ content: |-
 
   {% if status in ['error', 'stale'] or states(e) == 'unavailable' %}
   **Не удалось обновить**{{ ' · данные устарели' if status == 'stale' else '' }}
+  {% elif status == 'sleeping' %}
+  **Режим сна** · запросы приостановлены до {{ as_timestamp(state_attr(e, 'next_attempt')) | timestamp_custom('%H:%M', true) }}
   {% elif status == 'no_data' %}
   **Нет данных**
   {% elif status == 'ok' %}

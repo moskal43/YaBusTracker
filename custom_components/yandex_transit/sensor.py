@@ -48,6 +48,8 @@ class TransitSensor(CoordinatorEntity[TransitCoordinator], SensorEntity):
 
     @property
     def source_status(self):
+        if self.coordinator.is_sleeping:
+            return "sleeping"
         if not self.coordinator.last_update_success or self.coordinator.data is None:
             return "error"
         if dt_util.utcnow() >= self.coordinator.data.received_at + timedelta(
@@ -59,7 +61,10 @@ class TransitSensor(CoordinatorEntity[TransitCoordinator], SensorEntity):
     def _arrivals(self):
         if self.source_status != "ok":
             return ()
-        for direction in self.coordinator.data.directions:
+        snapshot = self.coordinator.data
+        if snapshot is None:
+            return ()
+        for direction in snapshot.directions:
             if (
                 direction.line_id == self.selected["line_id"]
                 and direction.thread_id == self.selected["thread_id"]

@@ -1,6 +1,7 @@
 """Configure stop IDs and explicit route directions using standard HA flows."""
 
 import re
+from datetime import time
 
 import voluptuous as vol
 from homeassistant import config_entries
@@ -8,18 +9,36 @@ from homeassistant.config_entries import ConfigFlowResult
 from homeassistant.core import callback
 from homeassistant.helpers import selector
 
-from .const import DEFAULT_INTERVAL, DOMAIN, MAX_INTERVAL
+from .const import (
+    CONF_SLEEP_ENABLED,
+    CONF_SLEEP_END,
+    CONF_SLEEP_START,
+    DEFAULT_INTERVAL,
+    DEFAULT_SLEEP_END,
+    DEFAULT_SLEEP_START,
+    DOMAIN,
+    MAX_INTERVAL,
+)
 from .models import Direction, StopSnapshot, TransitError, stop_id_from_url
 from .runtime import borrow
 
 
-def settings_schema(routes: str = "", interval: int = DEFAULT_INTERVAL) -> vol.Schema:
+def settings_schema(
+    routes: str = "",
+    interval: int = DEFAULT_INTERVAL,
+    sleep_enabled: bool = False,
+    sleep_start: str = DEFAULT_SLEEP_START,
+    sleep_end: str = DEFAULT_SLEEP_END,
+) -> vol.Schema:
     return vol.Schema(
         {
             vol.Required("routes", default=routes): str,
             vol.Required("scan_interval", default=interval): vol.All(
                 int, vol.Range(min=60, max=MAX_INTERVAL)
             ),
+            vol.Required(CONF_SLEEP_ENABLED, default=sleep_enabled): selector.BooleanSelector(),
+            vol.Required(CONF_SLEEP_START, default=sleep_start): selector.TimeSelector(),
+            vol.Required(CONF_SLEEP_END, default=sleep_end): selector.TimeSelector(),
         }
     )
 
@@ -68,7 +87,13 @@ def error_key(error: TransitError) -> str:
     return (
         code
         if code
-        in {"invalid_url", "invalid_interval", "route_not_found", "select_direction"}
+        in {
+            "invalid_url",
+            "invalid_interval",
+            "invalid_sleep_window",
+            "route_not_found",
+            "select_direction",
+        }
         else "cannot_connect"
     )
 
@@ -77,6 +102,17 @@ def validate_interval(value) -> int:
     if type(value) is not int or not 60 <= value <= MAX_INTERVAL:
         raise TransitError("invalid_interval")
     return value
+
+
+def validate_sleep_window(start, end) -> tuple[str, str]:
+    try:
+        parsed_start = start if isinstance(start, time) else time.fromisoformat(start)
+        parsed_end = end if isinstance(end, time) else time.fromisoformat(end)
+    except (TypeError, ValueError):
+        raise TransitError("invalid_sleep_window") from None
+    if parsed_start == parsed_end:
+        raise TransitError("invalid_sleep_window")
+    return parsed_start.isoformat(), parsed_end.isoformat()
 
 
 class TransitConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -92,6 +128,10 @@ class TransitConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             try:
                 interval = validate_interval(user_input["scan_interval"])
+                sleep_start, sleep_end = validate_sleep_window(
+                    user_input.get(CONF_SLEEP_START, DEFAULT_SLEEP_START),
+                    user_input.get(CONF_SLEEP_END, DEFAULT_SLEEP_END),
+                )
                 stop_id = stop_id_from_url(user_input["stop_url"])
                 await self.async_set_unique_id(stop_id)
                 self._abort_if_unique_id_configured()
@@ -102,6 +142,9 @@ class TransitConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     "stop_id": stop_id,
                     "stop_name": snapshot.name,
                     "scan_interval": interval,
+                    CONF_SLEEP_ENABLED: bool(user_input.get(CONF_SLEEP_ENABLED, False)),
+                    CONF_SLEEP_START: sleep_start,
+                    CONF_SLEEP_END: sleep_end,
                 }
                 if len({d.route for d in self._directions}) != len(self._directions):
                     return await self.async_step_select()
@@ -140,6 +183,11 @@ class TransitOptionsFlow(config_entries.OptionsFlowWithReload):
         if user_input is not None:
             try:
                 self._interval = validate_interval(user_input["scan_interval"])
+                self._sleep_start, self._sleep_end = validate_sleep_window(
+                    user_input.get(CONF_SLEEP_START, DEFAULT_SLEEP_START),
+                    user_input.get(CONF_SLEEP_END, DEFAULT_SLEEP_END),
+                )
+                self._sleep_enabled = bool(user_input.get(CONF_SLEEP_ENABLED, False))
                 coordinator = getattr(entry, "runtime_data", None)
                 snapshot = coordinator.data if coordinator is not None else None
                 if snapshot is None:
@@ -159,6 +207,9 @@ class TransitOptionsFlow(config_entries.OptionsFlowWithReload):
             data_schema=settings_schema(
                 ", ".join(dict.fromkeys(s["route"] for s in current["selections"])),
                 current["scan_interval"],
+                current.get(CONF_SLEEP_ENABLED, False),
+                current.get(CONF_SLEEP_START, DEFAULT_SLEEP_START),
+                current.get(CONF_SLEEP_END, DEFAULT_SLEEP_END),
             ),
         )
 
@@ -178,5 +229,12 @@ class TransitOptionsFlow(config_entries.OptionsFlowWithReload):
 
     def _finish(self, selections) -> ConfigFlowResult:
         return self.async_create_entry(
-            title="", data={"scan_interval": self._interval, "selections": selections}
+            title="",
+            data={
+                "scan_interval": self._interval,
+                "selections": selections,
+                CONF_SLEEP_ENABLED: self._sleep_enabled,
+                CONF_SLEEP_START: self._sleep_start,
+                CONF_SLEEP_END: self._sleep_end,
+            },
         )

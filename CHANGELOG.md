@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0
+
+- Configurable sleep mode with local start and end times, including windows across midnight.
+- No automatic source requests while sleeping; the next refresh is scheduled for wake time.
+- Sensors expose `sleeping`, clear arrivals and preserve the next-attempt timestamp.
+- Dashboard examples show a dedicated sleep message.
+
 ## 0.1.3
 
 - Public GitHub repository and HACS custom-repository installation.

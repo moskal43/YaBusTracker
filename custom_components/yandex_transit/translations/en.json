@@ -8,7 +8,10 @@
         "data": {
           "stop_url": "Stop URL",
           "routes": "Bus numbers",
-          "scan_interval": "Update interval (seconds)"
+          "scan_interval": "Update interval (seconds)",
+          "sleep_enabled": "Enable sleep mode",
+          "sleep_start": "Sleep starts",
+          "sleep_end": "Sleep ends"
         }
       },
       "select": {
@@ -22,6 +25,7 @@
     "error": {
       "invalid_url": "Use a full HTTPS Yandex Maps stop URL containing /stops/stop__…/.",
       "invalid_interval": "Enter a whole number between 60 and 86400 seconds.",
+      "invalid_sleep_window": "Choose different valid start and end times for sleep mode.",
       "route_not_found": "A requested bus was not found at this stop. Check the numbers and stop.",
       "select_direction": "Choose at least one direction for each requested bus.",
       "cannot_connect": "Could not retrieve stop data. The source may be unavailable or temporarily limiting requests; try again later."
@@ -37,7 +41,10 @@
         "description": "Enter bus numbers separated by commas. Saved directions are used when available.",
         "data": {
           "routes": "Bus numbers",
-          "scan_interval": "Update interval (seconds)"
+          "scan_interval": "Update interval (seconds)",
+          "sleep_enabled": "Enable sleep mode",
+          "sleep_start": "Sleep starts",
+          "sleep_end": "Sleep ends"
         }
       },
       "select": {
@@ -51,6 +58,7 @@
     "error": {
       "invalid_url": "Use a full HTTPS Yandex Maps stop URL containing /stops/stop__…/.",
       "invalid_interval": "Enter a whole number between 60 and 86400 seconds.",
+      "invalid_sleep_window": "Choose different valid start and end times for sleep mode.",
       "route_not_found": "A requested bus was not found at this stop. Check the numbers and stop.",
       "select_direction": "Choose at least one direction for each requested bus.",
       "cannot_connect": "Could not retrieve stop data. The source may be unavailable or temporarily limiting requests; try again later."

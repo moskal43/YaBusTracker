@@ -91,7 +91,16 @@ def stop_payload():
     }
 
 
-async def configure(hass, http, payload, routes="16", interval=60):
+async def configure(
+    hass,
+    http,
+    payload,
+    routes="16",
+    interval=60,
+    sleep_enabled=False,
+    sleep_start="22:00:00",
+    sleep_end="06:00:00",
+):
     http.get(API, payload={"csrfToken": "test-token"})
     http.get(API, payload=payload)
     http.get(API, payload=payload)
@@ -102,6 +111,9 @@ async def configure(hass, http, payload, routes="16", interval=60):
             "stop_url": f"https://yandex.ru/maps/1/test/stops/{payload['data']['id']}/",
             "routes": routes,
             "scan_interval": interval,
+            "sleep_enabled": sleep_enabled,
+            "sleep_start": sleep_start,
+            "sleep_end": sleep_end,
         },
     )
     await hass.async_block_till_done()
