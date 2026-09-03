@@ -21,11 +21,6 @@ styles:
   card:
     - border-radius: 26px
     - padding: 18px
-    - border: 1px solid rgba(210, 225, 245, 0.13)
-    - background: linear-gradient(135deg, rgba(55, 61, 73, 0.82), rgba(15, 19, 27, 0.88))
-    - box-shadow: inset 0 1px 1px rgba(255,255,255,0.12), 0 8px 24px rgba(0,0,0,0.16)
-    - backdrop-filter: blur(16px)
-    - -webkit-backdrop-filter: blur(16px)
     - text-align: left
     - overflow: hidden
     - font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif
@@ -94,9 +89,11 @@ custom_fields:
         action: none
       styles:
         card:
-          - background: none
-          - border: none
-          - box-shadow: none
+          - --ha-card-background: transparent
+          - --card-background-color: transparent
+          - background: transparent !important
+          - border: none !important
+          - box-shadow: none !important
           - padding: 0
           - border-radius: 0
           - text-align: left
@@ -194,4 +191,3 @@ custom_fields:
         .yabt-message { display:flex; gap:8px; align-items:center; padding:18px 13px; border-radius:20px; background:rgba(160,177,198,0.09); color:#cbd4df; font-size:12px; line-height:1.4; }
         .yabt-message ha-icon { --mdc-icon-size:20px; width:20px; height:20px; flex:0 0 20px; }
         .yabt-message.yabt-error { background:rgba(151,49,45,0.18); border:1px solid rgba(245,99,90,0.28); color:#ff8c83; }
-
