@@ -1,0 +1,59 @@
+{
+  "title": "YaBusTracker",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Bus arrivals",
+        "description": "Paste a full Yandex Maps stop URL containing /stops/stop__…/. Enter bus numbers separated by commas. Short links are not supported.",
+        "data": {
+          "stop_url": "Stop URL",
+          "routes": "Bus numbers",
+          "scan_interval": "Update interval (seconds)"
+        }
+      },
+      "select": {
+        "title": "Choose directions",
+        "description": "Stop: {stop_name}. Choose at least one direction for each requested bus number.",
+        "data": {
+          "directions": "Directions"
+        }
+      }
+    },
+    "error": {
+      "invalid_url": "Use a full HTTPS Yandex Maps stop URL containing /stops/stop__…/.",
+      "invalid_interval": "Enter a whole number between 60 and 86400 seconds.",
+      "route_not_found": "A requested bus was not found at this stop. Check the numbers and stop.",
+      "select_direction": "Choose at least one direction for each requested bus.",
+      "cannot_connect": "Could not retrieve stop data. The source may be unavailable or temporarily limiting requests; try again later."
+    },
+    "abort": {
+      "already_configured": "This stop is already configured. Change its routes using Configure."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Stop settings",
+        "description": "Enter bus numbers separated by commas. Saved directions are used when available.",
+        "data": {
+          "routes": "Bus numbers",
+          "scan_interval": "Update interval (seconds)"
+        }
+      },
+      "select": {
+        "title": "Choose directions",
+        "description": "Stop: {stop_name}. Choose at least one direction for each bus.",
+        "data": {
+          "directions": "Directions"
+        }
+      }
+    },
+    "error": {
+      "invalid_url": "Use a full HTTPS Yandex Maps stop URL containing /stops/stop__…/.",
+      "invalid_interval": "Enter a whole number between 60 and 86400 seconds.",
+      "route_not_found": "A requested bus was not found at this stop. Check the numbers and stop.",
+      "select_direction": "Choose at least one direction for each requested bus.",
+      "cannot_connect": "Could not retrieve stop data. The source may be unavailable or temporarily limiting requests; try again later."
+    }
+  }
+}

@@ -1,0 +1,15 @@
+name: Feature request / Предложение
+description: Describe a user need and the desired behavior.
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Desired behavior
+    validations:
+      required: true

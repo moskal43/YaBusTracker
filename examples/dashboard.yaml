@@ -1,0 +1,30 @@
+# Native HA Markdown card. Replace the entity ID on the next two lines.
+type: markdown
+entity_id: sensor.test_stop_16_terminus
+content: |-
+  {% set e = 'sensor.test_stop_16_terminus' %}
+  {% set status = state_attr(e, 'status') %}
+  **№ {{ state_attr(e, 'route') or '—' }} → {{ state_attr(e, 'direction') or '—' }}**
+
+  {{ state_attr(e, 'stop_name') or 'Остановка не настроена' }}
+
+  {% if status in ['error', 'stale'] or states(e) == 'unavailable' %}
+  **Не удалось обновить**{{ ' · данные устарели' if status == 'stale' else '' }}
+  {% elif status == 'no_data' %}
+  **Нет данных**
+  {% elif status == 'ok' %}
+  {% set ns = namespace(found=false) %}
+  {% for a in state_attr(e, 'arrivals') or [] %}
+  {% set seconds = as_timestamp(a.timestamp, 0) - as_timestamp(now()) %}
+  {% if seconds > 0 %}
+  {% set ns.found = true %}
+  - **Через {{ (seconds / 60) | round(0, 'ceil') | int }} мин** · {{ as_local(as_datetime(a.timestamp)).strftime('%H:%M') }} · {{ 'по расписанию' if a.source == 'scheduled' else 'прогноз' }}
+  {% endif %}
+  {% endfor %}
+  {% if not ns.found %}**Нет данных**{% endif %}
+  {% else %}
+  **Данные ещё не получены**
+  {% endif %}
+
+  {% set last = state_attr(e, 'last_success') %}
+  Обновлено: {{ as_local(as_datetime(last)).strftime('%d.%m %H:%M:%S') if last else 'ещё не обновлялось' }}

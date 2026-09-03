@@ -1,0 +1,5 @@
+# Matches the user's Home Assistant Core 2026.8.3.
+pytest-homeassistant-custom-component==0.13.357
+aioresponses==0.7.9
+mypy==2.3.1
+ruff==0.16.5

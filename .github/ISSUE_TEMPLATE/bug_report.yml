@@ -1,0 +1,27 @@
+name: Bug report / Ошибка
+description: Report a reproducible problem without credentials or personal configuration.
+body:
+  - type: input
+    id: version
+    attributes:
+      label: YaBusTracker version
+    validations:
+      required: true
+  - type: input
+    id: ha_version
+    attributes:
+      label: Home Assistant Core version
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps, expected result, actual result
+      description: Describe the behavior. Omit private addresses, credentials and configuration files.
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Safe diagnostics
+      description: Include status, last_error and last_success if useful. Never include cookies, tokens or signed URLs.
