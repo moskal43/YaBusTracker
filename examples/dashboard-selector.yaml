@@ -209,15 +209,21 @@ custom_fields:
               navigation_path: /config/integrations/integration/yandex_transit
             styles:
               card:
-                - width: 34px
-                - height: 34px
-                - padding: 8px
+                - width: 44px
+                - height: 44px
+                - padding: 0
+                - box-sizing: border-box
                 - border-radius: 50%
                 - border: 1px solid rgba(220,230,245,0.18)
                 - background: rgba(255,255,255,0.055)
                 - box-shadow: inset 0 1px 1px rgba(255,255,255,0.08)
+                - display: flex
+                - align-items: center
+                - justify-content: center
               icon:
-                - width: 18px
+                - width: 22px
+                - height: 22px
+                - margin: auto
                 - color: '#cbd3df'
         body: |-
           [[[[
@@ -251,14 +257,14 @@ custom_fields:
             } else {
               content = `<div class="yabt-message"><ha-icon icon="mdi:clock-outline"></ha-icon><span>${['ok', 'no_data'].includes(a.status) ? 'Нет данных' : 'Данные ещё не получены'}</span></div>`;
             }
-          return `<div class="yabt-header" style="display:grid;grid-template-columns:34px minmax(0,1fr);justify-content:start;text-align:left"><ha-icon icon="mdi:bus-clock"></ha-icon><div class="yabt-heading"><div class="yabt-title">№${escape(a.route || '—')}</div><div class="yabt-subtitle">${escape(a.stop_name || 'Остановка не настроена')}<span> → ${escape(a.direction || '—')}</span></div></div></div>${content}<div class="yabt-footer"><span class="yabt-dot ${failed ? 'yabt-bad' : ''}"></span>Обновлено: ${a.last_success ? escape(time(a.last_success, true)) : 'ещё не обновлялось'}</div>`;
+            return `<div class="yabt-header"><div class="yabt-identity"><ha-icon icon="mdi:bus-clock"></ha-icon><div class="yabt-title">Автобус №${escape(a.route || '—')}</div></div><div class="yabt-subtitle">${escape(a.stop_name || 'Остановка не настроена')}<span> → ${escape(a.direction || '—')}</span></div></div>${content}<div class="yabt-footer"><span class="yabt-dot ${failed ? 'yabt-bad' : ''}"></span>Обновлено: ${a.last_success ? escape(time(a.last_success, true)) : 'ещё не обновлялось'}</div>`;
            ]]]]
       extra_styles: |
-        .yabt-header { display:flex; justify-content:flex-start; align-items:center; gap:12px; padding-right:42px; margin-bottom:17px; min-height:74px; text-align:left; }
-        .yabt-header > ha-icon { --mdc-icon-size:34px; width:34px; height:34px; color:#7cc9ff; flex:0 0 34px; }
-        .yabt-heading { min-width:0; text-align:left; }
-        .yabt-title { color:#f2f5fa; font-size:20px; font-weight:750; letter-spacing:-0.35px; line-height:1.15; }
-        .yabt-subtitle { margin-top:32px; color:#aebccd; font-size:11px; line-height:1.4; overflow-wrap:anywhere; }
+        .yabt-header { margin-bottom:17px; min-height:64px; text-align:left; }
+        .yabt-identity { display:flex; align-items:center; gap:12px; height:44px; padding-right:184px; }
+        .yabt-identity > ha-icon { --mdc-icon-size:34px; display:flex; align-items:center; justify-content:center; width:34px; height:34px; color:#7cc9ff; flex:0 0 34px; }
+        .yabt-title { color:#f2f5fa; font-size:20px; font-weight:750; letter-spacing:-0.35px; line-height:1.15; white-space:nowrap; }
+        .yabt-subtitle { margin-top:10px; padding-left:46px; color:#aebccd; font-size:11px; line-height:1.4; overflow-wrap:anywhere; }
         .yabt-subtitle span { color:#c8d8eb; }
         .yabt-arrivals { display:grid; grid-auto-flow:column; grid-auto-columns:minmax(0,1fr); gap:8px; }
         .yabt-arrival { min-width:0; padding:13px 4px 11px; border-radius:21px; border:1px solid rgba(75,145,222,0.3); background:rgba(28,72,123,0.3); box-shadow:inset 0 1px 0 rgba(176,214,255,0.08); text-align:center; }
