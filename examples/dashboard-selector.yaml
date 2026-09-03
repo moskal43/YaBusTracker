@@ -29,6 +29,7 @@ styles:
     - grid-template-areas: '"content"'
     - grid-template-columns: minmax(0, 1fr)
     - grid-template-rows: min-content
+    - justify-items: stretch
   custom_fields:
     route_16:
       - position: absolute
@@ -51,6 +52,8 @@ styles:
     content:
       - width: 100%
       - min-width: 0
+      - justify-self: stretch
+      - text-align: left
 custom_fields:
   route_16:
     card:
@@ -185,6 +188,7 @@ custom_fields:
           - grid-template-areas: '"body"'
           - grid-template-columns: minmax(0, 1fr)
           - grid-template-rows: min-content
+          - justify-items: stretch
         custom_fields:
           body:
             - width: 100%
@@ -192,6 +196,9 @@ custom_fields:
             - justify-self: stretch
             - white-space: normal
             - text-align: left
+            - display: block
+            - margin-left: 0
+            - padding-left: 0
           settings:
             - position: absolute
             - top: 0
@@ -260,10 +267,10 @@ custom_fields:
             return `<div class="yabt-header"><div class="yabt-identity"><ha-icon icon="mdi:bus-clock"></ha-icon><div class="yabt-title">Автобус №${escape(a.route || '—')}</div></div><div class="yabt-subtitle">${escape(a.stop_name || 'Остановка не настроена')}<span> → ${escape(a.direction || '—')}</span></div></div>${content}<div class="yabt-footer"><span class="yabt-dot ${failed ? 'yabt-bad' : ''}"></span>Обновлено: ${a.last_success ? escape(time(a.last_success, true)) : 'ещё не обновлялось'}</div>`;
            ]]]]
       extra_styles: |
-        .yabt-header { margin-bottom:17px; min-height:64px; text-align:left; }
-        .yabt-identity { display:flex; align-items:center; gap:12px; height:44px; padding-right:184px; }
+        .yabt-header { display:block; width:100%; margin:0 0 17px 0; padding:0; min-height:64px; text-align:left; box-sizing:border-box; }
+        .yabt-identity { display:flex; align-items:center; justify-content:flex-start; gap:12px; width:calc(100% - 184px); height:44px; margin:0; padding:0; box-sizing:border-box; }
         .yabt-identity > ha-icon { --mdc-icon-size:34px; display:flex; align-items:center; justify-content:center; width:34px; height:34px; color:#7cc9ff; flex:0 0 34px; }
-        .yabt-title { color:#f2f5fa; font-size:20px; font-weight:750; letter-spacing:-0.35px; line-height:1.15; white-space:nowrap; }
+        .yabt-title { margin:0; padding:0; text-align:left; color:#f2f5fa; font-size:20px; font-weight:750; letter-spacing:-0.35px; line-height:1.15; white-space:nowrap; }
         .yabt-subtitle { margin-top:10px; padding-left:46px; color:#aebccd; font-size:11px; line-height:1.4; overflow-wrap:anywhere; }
         .yabt-subtitle span { color:#c8d8eb; }
         .yabt-arrivals { display:grid; grid-auto-flow:column; grid-auto-columns:minmax(0,1fr); gap:8px; }
