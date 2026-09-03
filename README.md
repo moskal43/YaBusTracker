@@ -42,6 +42,8 @@ YaBusTracker**. Вставьте полную HTTPS-ссылку останов�
 
 ## Карточка
 
+![Пример карточки YaBusTracker](https://raw.githubusercontent.com/moskal43/YaBusTracker/main/docs/images/dashboard-card.png)
+
 Добавьте штатную карточку **Markdown** на существующий дашборд и вставьте
 [examples/dashboard.yaml](examples/dashboard.yaml). Замените ID сущности в
 двух отмеченных местах на ID вашего датчика YaBusTracker.
