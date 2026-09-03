@@ -30,56 +30,136 @@ styles:
     - grid-template-columns: minmax(0, 1fr)
     - grid-template-rows: min-content
   custom_fields:
-    routes:
+    route_16:
       - position: absolute
-      - top: 0
+      - top: -1px
+      - right: 112px
+      - width: 30px
+      - z-index: 3
+    route_51:
+      - position: absolute
+      - top: -1px
+      - right: 78px
+      - width: 30px
+      - z-index: 3
+    route_2:
+      - position: absolute
+      - top: -1px
       - right: 44px
-      - width: 96px
-      - min-width: 0
-      - z-index: 2
+      - width: 30px
+      - z-index: 3
     content:
       - width: 100%
       - min-width: 0
 custom_fields:
-  routes:
+  route_16:
     card:
-      type: grid
-      columns: 3
-      square: false
-      cards: |
-        [[[
-          return variables.routes.map(({route}) => ({
-            type: 'custom:button-card',
-            entity: variables.selector,
-            name: route,
-            show_icon: false,
-            show_state: false,
-            tap_action: {
-              action: 'perform-action',
-              perform_action: 'input_select.select_option',
-              target: { entity_id: variables.selector },
-              data: { option: route }
-            },
-            styles: {
-              card: [
-                { height: '24px' }, { padding: '2px 3px' }, { 'border-radius': '10px' },
-                { border: '1px solid rgba(180,200,225,0.12)' },
-                { background: 'rgba(160,177,198,0.07)' }, { 'box-shadow': 'none' }
-              ],
-              name: [{ color: '#aebccd' }, { 'font-size': '11px' }, { 'font-weight': 650 }]
-            },
-            state: [{
-              value: route,
-              styles: {
-                card: [
-                  { background: 'rgba(46,94,151,0.42)' },
-                  { border: '1px solid rgba(113,188,255,0.5)' }
-                ],
-                name: [{ color: '#e2f1ff' }]
-              }
-            }]
-          }));
-        ]]]
+      type: custom:button-card
+      entity: '[[[ return variables.selector; ]]]'
+      name: '16'
+      show_icon: false
+      show_state: false
+      tap_action:
+        action: perform-action
+        perform_action: input_select.select_option
+        target:
+          entity_id: '[[[ return variables.selector; ]]]'
+        data:
+          option: '16'
+      styles:
+        card:
+          - width: 30px
+          - height: 26px
+          - padding: 0
+          - border-radius: 10px
+          - border: 1px solid rgba(185,205,230,0.24)
+          - background: rgba(120,140,165,0.24)
+          - box-shadow: inset 0 1px 0 rgba(255,255,255,0.07)
+        name:
+          - color: '#d5deea'
+          - font-size: 13px
+          - font-weight: 750
+      state:
+        - value: '16'
+          styles:
+            card:
+              - background: rgba(42,174,80,0.32)
+              - border: 1px solid rgba(77,230,116,0.72)
+              - box-shadow: inset 0 1px 0 rgba(184,255,203,0.12), 0 0 10px rgba(39,190,82,0.12)
+            name:
+              - color: '#67ef87'
+  route_51:
+    card:
+      type: custom:button-card
+      entity: '[[[ return variables.selector; ]]]'
+      name: '51'
+      show_icon: false
+      show_state: false
+      tap_action:
+        action: perform-action
+        perform_action: input_select.select_option
+        target:
+          entity_id: '[[[ return variables.selector; ]]]'
+        data:
+          option: '51'
+      styles:
+        card:
+          - width: 30px
+          - height: 26px
+          - padding: 0
+          - border-radius: 10px
+          - border: 1px solid rgba(185,205,230,0.24)
+          - background: rgba(120,140,165,0.24)
+          - box-shadow: inset 0 1px 0 rgba(255,255,255,0.07)
+        name:
+          - color: '#d5deea'
+          - font-size: 13px
+          - font-weight: 750
+      state:
+        - value: '51'
+          styles:
+            card:
+              - background: rgba(42,174,80,0.32)
+              - border: 1px solid rgba(77,230,116,0.72)
+              - box-shadow: inset 0 1px 0 rgba(184,255,203,0.12), 0 0 10px rgba(39,190,82,0.12)
+            name:
+              - color: '#67ef87'
+  route_2:
+    card:
+      type: custom:button-card
+      entity: '[[[ return variables.selector; ]]]'
+      name: '2'
+      show_icon: false
+      show_state: false
+      tap_action:
+        action: perform-action
+        perform_action: input_select.select_option
+        target:
+          entity_id: '[[[ return variables.selector; ]]]'
+        data:
+          option: '2'
+      styles:
+        card:
+          - width: 30px
+          - height: 26px
+          - padding: 0
+          - border-radius: 10px
+          - border: 1px solid rgba(185,205,230,0.24)
+          - background: rgba(120,140,165,0.24)
+          - box-shadow: inset 0 1px 0 rgba(255,255,255,0.07)
+        name:
+          - color: '#d5deea'
+          - font-size: 13px
+          - font-weight: 750
+      state:
+        - value: '2'
+          styles:
+            card:
+              - background: rgba(42,174,80,0.32)
+              - border: 1px solid rgba(77,230,116,0.72)
+              - box-shadow: inset 0 1px 0 rgba(184,255,203,0.12), 0 0 10px rgba(39,190,82,0.12)
+            name:
+              - color: '#67ef87'
   content:
     card:
       type: custom:button-card
