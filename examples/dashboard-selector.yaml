@@ -32,21 +32,21 @@ styles:
   custom_fields:
     route_16:
       - position: absolute
-      - top: -1px
-      - right: 112px
-      - width: 30px
+      - top: 0
+      - right: 136px
+      - width: 44px
       - z-index: 3
     route_51:
       - position: absolute
-      - top: -1px
-      - right: 78px
-      - width: 30px
+      - top: 0
+      - right: 88px
+      - width: 44px
       - z-index: 3
     route_2:
       - position: absolute
-      - top: -1px
-      - right: 44px
-      - width: 30px
+      - top: 0
+      - right: 40px
+      - width: 44px
       - z-index: 3
     content:
       - width: 100%
@@ -68,17 +68,17 @@ custom_fields:
           option: '16'
       styles:
         card:
-          - width: 30px
-          - height: 26px
+          - width: 44px
+          - height: 44px
           - padding: 0
-          - border-radius: 10px
-          - border: 1px solid rgba(185,205,230,0.24)
-          - background: rgba(120,140,165,0.24)
-          - box-shadow: inset 0 1px 0 rgba(255,255,255,0.07)
+          - border-radius: 14px
+          - border: 1px solid rgba(185,205,230,0.28)
+          - background: rgba(120,140,165,0.28)
+          - box-shadow: inset 0 1px 0 rgba(255,255,255,0.08)
         name:
           - color: '#d5deea'
-          - font-size: 13px
-          - font-weight: 750
+          - font-size: 18px
+          - font-weight: 780
       state:
         - value: '16'
           styles:
@@ -104,17 +104,17 @@ custom_fields:
           option: '51'
       styles:
         card:
-          - width: 30px
-          - height: 26px
+          - width: 44px
+          - height: 44px
           - padding: 0
-          - border-radius: 10px
-          - border: 1px solid rgba(185,205,230,0.24)
-          - background: rgba(120,140,165,0.24)
-          - box-shadow: inset 0 1px 0 rgba(255,255,255,0.07)
+          - border-radius: 14px
+          - border: 1px solid rgba(185,205,230,0.28)
+          - background: rgba(120,140,165,0.28)
+          - box-shadow: inset 0 1px 0 rgba(255,255,255,0.08)
         name:
           - color: '#d5deea'
-          - font-size: 13px
-          - font-weight: 750
+          - font-size: 18px
+          - font-weight: 780
       state:
         - value: '51'
           styles:
@@ -140,17 +140,17 @@ custom_fields:
           option: '2'
       styles:
         card:
-          - width: 30px
-          - height: 26px
+          - width: 44px
+          - height: 44px
           - padding: 0
-          - border-radius: 10px
-          - border: 1px solid rgba(185,205,230,0.24)
-          - background: rgba(120,140,165,0.24)
-          - box-shadow: inset 0 1px 0 rgba(255,255,255,0.07)
+          - border-radius: 14px
+          - border: 1px solid rgba(185,205,230,0.28)
+          - background: rgba(120,140,165,0.28)
+          - box-shadow: inset 0 1px 0 rgba(255,255,255,0.08)
         name:
           - color: '#d5deea'
-          - font-size: 13px
-          - font-weight: 750
+          - font-size: 18px
+          - font-weight: 780
       state:
         - value: '2'
           styles:
@@ -251,14 +251,14 @@ custom_fields:
             } else {
               content = `<div class="yabt-message"><ha-icon icon="mdi:clock-outline"></ha-icon><span>${['ok', 'no_data'].includes(a.status) ? 'Нет данных' : 'Данные ещё не получены'}</span></div>`;
             }
-            return `<div class="yabt-header" style="display:grid;grid-template-columns:34px minmax(0,1fr);justify-content:start;text-align:left"><ha-icon icon="mdi:bus-clock"></ha-icon><div class="yabt-heading"><div class="yabt-title">Автобус №${escape(a.route || '—')}</div><div class="yabt-subtitle">${escape(a.stop_name || 'Остановка не настроена')}<span> → ${escape(a.direction || '—')}</span></div></div></div>${content}<div class="yabt-footer"><span class="yabt-dot ${failed ? 'yabt-bad' : ''}"></span>Обновлено: ${a.last_success ? escape(time(a.last_success, true)) : 'ещё не обновлялось'}</div>`;
+          return `<div class="yabt-header" style="display:grid;grid-template-columns:34px minmax(0,1fr);justify-content:start;text-align:left"><ha-icon icon="mdi:bus-clock"></ha-icon><div class="yabt-heading"><div class="yabt-title">№${escape(a.route || '—')}</div><div class="yabt-subtitle">${escape(a.stop_name || 'Остановка не настроена')}<span> → ${escape(a.direction || '—')}</span></div></div></div>${content}<div class="yabt-footer"><span class="yabt-dot ${failed ? 'yabt-bad' : ''}"></span>Обновлено: ${a.last_success ? escape(time(a.last_success, true)) : 'ещё не обновлялось'}</div>`;
            ]]]]
       extra_styles: |
-        .yabt-header { display:flex; justify-content:flex-start; align-items:center; gap:12px; padding-right:42px; margin-bottom:17px; min-height:40px; text-align:left; }
+        .yabt-header { display:flex; justify-content:flex-start; align-items:center; gap:12px; padding-right:42px; margin-bottom:17px; min-height:74px; text-align:left; }
         .yabt-header > ha-icon { --mdc-icon-size:34px; width:34px; height:34px; color:#7cc9ff; flex:0 0 34px; }
         .yabt-heading { min-width:0; text-align:left; }
         .yabt-title { color:#f2f5fa; font-size:20px; font-weight:750; letter-spacing:-0.35px; line-height:1.15; }
-        .yabt-subtitle { margin-top:5px; color:#aebccd; font-size:11px; line-height:1.4; overflow-wrap:anywhere; }
+        .yabt-subtitle { margin-top:32px; color:#aebccd; font-size:11px; line-height:1.4; overflow-wrap:anywhere; }
         .yabt-subtitle span { color:#c8d8eb; }
         .yabt-arrivals { display:grid; grid-auto-flow:column; grid-auto-columns:minmax(0,1fr); gap:8px; }
         .yabt-arrival { min-width:0; padding:13px 4px 11px; border-radius:21px; border:1px solid rgba(75,145,222,0.3); background:rgba(28,72,123,0.3); box-shadow:inset 0 1px 0 rgba(176,214,255,0.08); text-align:center; }
