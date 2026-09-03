@@ -1,0 +1,197 @@
+# Route selector. Requires button-card 7+ and an input_select helper.
+# Set variables.selector and variables.routes to match your entities.
+# Options in the helper must match the route strings. See docs/install.md.
+type: custom:button-card
+variables:
+  selector: input_select.yabustracker_bus
+  routes:
+    - route: '16'
+      sensor: sensor.test_stop_16_terminus
+    - route: '51'
+      sensor: sensor.test_stop_51_terminus
+    - route: '2'
+      sensor: sensor.test_stop_2_terminus
+entity: '[[[ return variables.selector; ]]]'
+show_name: false
+show_icon: false
+show_state: false
+tap_action:
+  action: none
+styles:
+  card:
+    - border-radius: 26px
+    - padding: 18px
+    - border: 1px solid rgba(210, 225, 245, 0.13)
+    - background: linear-gradient(135deg, rgba(55, 61, 73, 0.82), rgba(15, 19, 27, 0.88))
+    - box-shadow: inset 0 1px 1px rgba(255,255,255,0.12), 0 8px 24px rgba(0,0,0,0.16)
+    - backdrop-filter: blur(16px)
+    - -webkit-backdrop-filter: blur(16px)
+    - text-align: left
+    - overflow: hidden
+    - font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif
+  grid:
+    - grid-template-areas: '"routes" "content"'
+    - grid-template-columns: minmax(0, 1fr)
+    - grid-template-rows: min-content min-content
+    - row-gap: 16px
+  custom_fields:
+    routes:
+      - width: 100%
+      - min-width: 0
+    content:
+      - width: 100%
+      - min-width: 0
+custom_fields:
+  routes:
+    card:
+      type: grid
+      columns: 3
+      square: false
+      cards: |
+        [[[
+          return variables.routes.map(({route}) => ({
+            type: 'custom:button-card',
+            entity: variables.selector,
+            name: `№${route}`,
+            show_icon: false,
+            show_state: false,
+            tap_action: {
+              action: 'perform-action',
+              perform_action: 'input_select.select_option',
+              target: { entity_id: variables.selector },
+              data: { option: route }
+            },
+            styles: {
+              card: [
+                { height: '44px' }, { padding: '8px' }, { 'border-radius': '16px' },
+                { border: '1px solid rgba(180,200,225,0.12)' },
+                { background: 'rgba(160,177,198,0.07)' }, { 'box-shadow': 'none' }
+              ],
+              name: [{ color: '#aebccd' }, { 'font-size': '14px' }, { 'font-weight': 650 }]
+            },
+            state: [{
+              value: route,
+              styles: {
+                card: [
+                  { background: 'rgba(46,94,151,0.42)' },
+                  { border: '1px solid rgba(113,188,255,0.5)' }
+                ],
+                name: [{ color: '#e2f1ff' }]
+              }
+            }]
+          }));
+        ]]]
+  content:
+    card:
+      type: custom:button-card
+      variables:
+        sensor: '[[[ return variables.routes.find(r => r.route === entity?.state)?.sensor; ]]]'
+      show_name: false
+      show_icon: false
+      show_state: false
+      update_timer: 10s
+      tap_action:
+        action: none
+      styles:
+        card:
+          - background: none
+          - border: none
+          - box-shadow: none
+          - padding: 0
+          - border-radius: 0
+          - text-align: left
+        grid:
+          - grid-template-areas: '"body"'
+          - grid-template-columns: minmax(0, 1fr)
+          - grid-template-rows: min-content
+        custom_fields:
+          body:
+            - width: 100%
+            - min-width: 0
+            - justify-self: stretch
+            - white-space: normal
+            - text-align: left
+          settings:
+            - position: absolute
+            - top: 0
+            - right: 0
+      custom_fields:
+        settings:
+          card:
+            type: custom:button-card
+            name: Настройки YaBusTracker
+            icon: mdi:cog-outline
+            show_name: false
+            show_state: false
+            tap_action:
+              action: navigate
+              navigation_path: /config/integrations/integration/yandex_transit
+            styles:
+              card:
+                - width: 34px
+                - height: 34px
+                - padding: 8px
+                - border-radius: 50%
+                - border: 1px solid rgba(220,230,245,0.18)
+                - background: rgba(255,255,255,0.055)
+                - box-shadow: inset 0 1px 1px rgba(255,255,255,0.08)
+              icon:
+                - width: 18px
+                - color: '#cbd3df'
+        body: |-
+          [[[[
+            const item = states[variables.sensor];
+            const a = item?.attributes ?? {};
+            const now = Date.now();
+            const failed = item?.state === 'unavailable' || ['error', 'stale'].includes(a.status);
+            const available = !!item && !failed && a.status === 'ok';
+            const arrivals = (available && Array.isArray(a.arrivals) ? a.arrivals : [])
+              .filter(x => Number.isFinite(Date.parse(x.timestamp)) && Date.parse(x.timestamp) > now)
+              .slice(0, 3);
+            const escape = value => String(value ?? '').replace(/[&<>"']/g,
+              c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+            const time = (value, seconds = false) => {
+              const stamp = Date.parse(value);
+              if (!Number.isFinite(stamp)) return '—';
+              return new Intl.DateTimeFormat(hass.locale?.language || 'ru', {
+                timeZone: hass.config.time_zone, hour: '2-digit', minute: '2-digit',
+                ...(seconds ? {second: '2-digit'} : {}), hour12: false
+              }).format(new Date(stamp));
+            };
+            let content;
+            if (failed) {
+              content = `<div class="yabt-message yabt-error"><ha-icon icon="mdi:alert-circle-outline"></ha-icon><span>Не удалось обновить${a.status === 'stale' ? ' · данные устарели' : ''}</span></div>`;
+            } else if (arrivals.length) {
+              content = `<div class="yabt-arrivals">${arrivals.map(x => {
+                const minutes = Math.ceil((Date.parse(x.timestamp) - now) / 60000);
+                const scheduled = x.source === 'scheduled';
+                return `<div class="yabt-arrival ${scheduled ? 'yabt-scheduled' : 'yabt-estimated'}" aria-label="Через ${minutes} мин, ${scheduled ? 'по расписанию' : 'прогноз'}"><div class="yabt-minutes">${minutes}<span>мин</span></div><div class="yabt-time">${escape(time(x.timestamp))}</div><div class="yabt-source">${scheduled ? 'по расписанию' : 'прогноз'}</div></div>`;
+              }).join('')}</div>`;
+            } else {
+              content = `<div class="yabt-message"><ha-icon icon="mdi:clock-outline"></ha-icon><span>${['ok', 'no_data'].includes(a.status) ? 'Нет данных' : 'Данные ещё не получены'}</span></div>`;
+            }
+            return `<div class="yabt-header" style="display:grid;grid-template-columns:34px minmax(0,1fr);justify-content:start;text-align:left"><ha-icon icon="mdi:bus-clock"></ha-icon><div class="yabt-heading"><div class="yabt-title">Автобус №${escape(a.route || '—')}</div><div class="yabt-subtitle">${escape(a.stop_name || 'Остановка не настроена')}<span> → ${escape(a.direction || '—')}</span></div></div></div>${content}<div class="yabt-footer"><span class="yabt-dot ${failed ? 'yabt-bad' : ''}"></span>Обновлено: ${a.last_success ? escape(time(a.last_success, true)) : 'ещё не обновлялось'}</div>`;
+           ]]]]
+      extra_styles: |
+        .yabt-header { display:flex; justify-content:flex-start; align-items:center; gap:12px; padding-right:42px; margin-bottom:17px; min-height:40px; text-align:left; }
+        .yabt-header > ha-icon { --mdc-icon-size:34px; width:34px; height:34px; color:#7cc9ff; flex:0 0 34px; }
+        .yabt-heading { min-width:0; text-align:left; }
+        .yabt-title { color:#f2f5fa; font-size:20px; font-weight:750; letter-spacing:-0.35px; line-height:1.15; }
+        .yabt-subtitle { margin-top:5px; color:#aebccd; font-size:11px; line-height:1.4; overflow-wrap:anywhere; }
+        .yabt-subtitle span { color:#c8d8eb; }
+        .yabt-arrivals { display:grid; grid-auto-flow:column; grid-auto-columns:minmax(0,1fr); gap:8px; }
+        .yabt-arrival { min-width:0; padding:13px 4px 11px; border-radius:21px; border:1px solid rgba(75,145,222,0.3); background:rgba(28,72,123,0.3); box-shadow:inset 0 1px 0 rgba(176,214,255,0.08); text-align:center; }
+        .yabt-arrival:first-child { border-color:rgba(113,188,255,0.5); background:rgba(46,94,151,0.38); }
+        .yabt-arrival.yabt-scheduled { border-color:rgba(164,183,211,0.25); background:rgba(118,135,158,0.12); }
+        .yabt-minutes { color:#f2f5fa; white-space:nowrap; font-size:29px; font-weight:750; line-height:1.1; letter-spacing:-0.7px; font-variant-numeric:tabular-nums; }
+        .yabt-minutes span { margin-left:4px; color:#b2c6df; font-size:11px; font-weight:500; letter-spacing:0; }
+        .yabt-time { margin-top:6px; color:#cfdef0; font-size:12px; font-variant-numeric:tabular-nums; }
+        .yabt-source { margin-top:5px; color:#88bff3; font-size:10px; white-space:nowrap; }
+        .yabt-scheduled .yabt-source { color:#b7c2d1; }
+        .yabt-footer { display:flex; align-items:center; gap:6px; margin-top:14px; color:#9caabe; font-size:10px; }
+        .yabt-dot { width:5px; height:5px; border-radius:50%; background:#77baff; flex-shrink:0; }
+        .yabt-dot.yabt-bad { background:#ff776c; }
+        .yabt-message { display:flex; gap:8px; align-items:center; padding:18px 13px; border-radius:20px; background:rgba(160,177,198,0.09); color:#cbd4df; font-size:12px; line-height:1.4; }
+        .yabt-message ha-icon { --mdc-icon-size:20px; width:20px; height:20px; flex:0 0 20px; }
+        .yabt-message.yabt-error { background:rgba(151,49,45,0.18); border:1px solid rgba(245,99,90,0.28); color:#ff8c83; }
+
