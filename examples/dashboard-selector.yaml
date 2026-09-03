@@ -268,7 +268,7 @@ custom_fields:
            ]]]]
       extra_styles: |
         .yabt-header { display:block; width:100%; margin:0 0 17px 0; padding:0; min-height:64px; text-align:left; box-sizing:border-box; }
-        .yabt-identity { display:flex; align-items:center; justify-content:flex-start; gap:12px; width:calc(100% - 184px); height:44px; margin:0; padding:0; box-sizing:border-box; }
+        .yabt-identity { display:flex; align-items:center; justify-content:flex-start; gap:12px; width:calc(100% - 160px); height:44px; margin:0; padding:0; box-sizing:border-box; transform:translateX(-24px); }
         .yabt-identity > ha-icon { --mdc-icon-size:34px; display:flex; align-items:center; justify-content:center; width:34px; height:34px; color:#7cc9ff; flex:0 0 34px; }
         .yabt-title { margin:0; padding:0; text-align:left; color:#f2f5fa; font-size:20px; font-weight:750; letter-spacing:-0.35px; line-height:1.15; white-space:nowrap; }
         .yabt-subtitle { margin-top:10px; padding-left:46px; color:#aebccd; font-size:11px; line-height:1.4; overflow-wrap:anywhere; }
