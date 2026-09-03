@@ -23,7 +23,7 @@ per-arrival forecast/schedule labels, multiple stops and a native Markdown card.
 
 ## Установка через HACS
 
-[**Добавить YaBusTracker в HACS**](https://my.home-assistant.io/redirect/hacs_repository/?owner=moskal43&repository=YaBusTracker&category=integration)
+[![Открыть YaBusTracker в HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=moskal43&repository=YaBusTracker&category=integration)
 
 Или вручную: **HACS → меню ⋮ → Пользовательские репозитории**. Укажите
 `https://github.com/moskal43/YaBusTracker`, тип **Integration**, затем найдите

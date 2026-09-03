@@ -12,7 +12,9 @@ Python и aiohttp предоставляются самим Core; отдельн
 4. Перезапустите Home Assistant Core.
 5. Настройки → Устройства и службы → Добавить интеграцию → **YaBusTracker**.
 
-Можно воспользоваться [прямой ссылкой добавления](https://my.home-assistant.io/redirect/hacs_repository/?owner=moskal43&repository=YaBusTracker&category=integration).
+Прямое добавление репозитория:
+
+[![Открыть YaBusTracker в HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=moskal43&repository=YaBusTracker&category=integration)
 
 ## Настройка
 
