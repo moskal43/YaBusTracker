@@ -104,13 +104,15 @@ extra_styles: |
   .yabt-subtitle span { color:#c8d8eb; }
   .yabt-arrivals { display:grid; grid-auto-flow:column; grid-auto-columns:minmax(0,1fr); gap:8px; }
   .yabt-arrival { min-width:0; padding:13px 4px 11px; border-radius:21px; border:1px solid rgba(75,145,222,0.3); background:rgba(28,72,123,0.3); box-shadow:inset 0 1px 0 rgba(176,214,255,0.08); text-align:center; }
-  .yabt-arrival:first-child { border-color:rgba(113,188,255,0.5); background:rgba(46,94,151,0.38); }
+  .yabt-arrival:first-child, .yabt-arrival:first-child.yabt-scheduled { border-color:rgba(126,211,255,0.92); background:linear-gradient(180deg, rgba(37,151,231,0.98), rgba(5,111,191,0.98)); box-shadow:inset 0 1px 0 rgba(255,255,255,0.24), 0 4px 14px rgba(0,127,218,0.28); }
   .yabt-arrival.yabt-scheduled { border-color:rgba(164,183,211,0.25); background:rgba(118,135,158,0.12); }
   .yabt-minutes { color:#f2f5fa; white-space:nowrap; font-size:29px; font-weight:750; line-height:1.1; letter-spacing:-0.7px; font-variant-numeric:tabular-nums; }
   .yabt-minutes span { margin-left:4px; color:#b2c6df; font-size:11px; font-weight:500; letter-spacing:0; }
   .yabt-time { margin-top:6px; color:#cfdef0; font-size:12px; font-variant-numeric:tabular-nums; }
   .yabt-source { margin-top:5px; color:#88bff3; font-size:10px; white-space:nowrap; }
   .yabt-scheduled .yabt-source { color:#b7c2d1; }
+  .yabt-arrival:first-child .yabt-minutes, .yabt-arrival:first-child .yabt-time { color:#ffffff; }
+  .yabt-arrival:first-child .yabt-minutes span, .yabt-arrival:first-child .yabt-source { color:#d9f1ff; }
   .yabt-footer { display:flex; align-items:center; gap:6px; margin-top:14px; color:#9caabe; font-size:10px; }
   .yabt-dot { width:5px; height:5px; border-radius:50%; background:#77baff; flex-shrink:0; }
   .yabt-dot.yabt-bad { background:#ff776c; }
